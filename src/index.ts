@@ -1,10 +1,10 @@
 import express from "express";
 import routes from "./routes";
-const app = express();
+const app : express.Application = express();
 const port : number = 3000;
 
 // creating a get endpoint
-app.get("/",(req,res)=>{
+app.get("/",(req : express.Request,res : express.Response)=>{
     res.send("Hello there,, if you want to see the images go to /images/img/img2 and have fun!!");
 })
 
@@ -16,3 +16,4 @@ app.listen(port,()=>{
     console.log(`the server is opened at http://localhost:${port}`);
 
 })
+export default app;
