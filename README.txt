@@ -7,6 +7,5 @@
 ##Used Endpoints:
 - just use /images/img/img2 to begin
 
--please note that no unit testing was executed as There was not a lot of functions created in this project
 
 
