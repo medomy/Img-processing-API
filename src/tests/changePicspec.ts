@@ -8,6 +8,6 @@ describe('changePic function tests' , ()=>{
     it('should return error when passed NAN width or height' ,async ()=>{
         // can not resolve non number queries you put , give width and height a number query
        // expectAsync(await changePicSize("pyramids.jpg", Number("an") , Number("an"))).toBeRejectedWithError('Error: can not resolve non number queries you put , give width and height a number query');
-       expect(await changePicSize("pyramids.jpg", Number("an") , Number("an"))).toThrow(new Error('can not resolve non number queries you put , give width and height a number query'));
+       expect(()=>changePicSize("pyramids.jpg", Number("an") , Number("an"))).toThrowError('can not resolve non number queries you put , give width and height a number query');
     })
 })

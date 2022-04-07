@@ -20,6 +20,14 @@ describe('changePic function tests', () => {
     it('should return error when passed NAN width or height', () => __awaiter(void 0, void 0, void 0, function* () {
         // can not resolve non number queries you put , give width and height a number query
         // expectAsync(await changePicSize("pyramids.jpg", Number("an") , Number("an"))).toBeRejectedWithError('Error: can not resolve non number queries you put , give width and height a number query');
-        expect(yield (0, changePicSize_1.default)("pyramids.jpg", Number("an"), Number("an"))).toThrow(new Error('can not resolve non number queries you put , give width and height a number query'));
+        const test = () => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                const pic = yield (0, changePicSize_1.default)("pyramids.jpg", Number("an"), Number("an"));
+            }
+            catch (err) {
+                throw err;
+            }
+        });
+        expect(() => (0, changePicSize_1.default)("pyramids.jpg", Number("an"), Number("an"))).toThrowError('can not resolve non number queries you put , give width and height a number query');
     }));
 });
