@@ -1,9 +1,9 @@
 import express from 'express';
 import myMiddleWare from '../../middlewares';
-import changePicSize from '../../utils';
+import checkPicSize from '../../utils';
 
 const imgRoute : express.Router = express.Router();
 
-imgRoute.get('/img2', myMiddleWare, changePicSize)
+imgRoute.get('/img2', myMiddleWare, checkPicSize)
 
 export default imgRoute;

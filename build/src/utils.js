@@ -14,41 +14,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
 const images_1 = require("../images");
-const sharp_1 = __importDefault(require("sharp"));
-const changePicSize = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.query.name) {
-        res.send("in the url enter a name query to get your picture like this , ?name=example&height=500&width=500 , note that width and height are optional");
-    }
-    else {
-        const files = yield fs_1.promises.readdir(images_1.imgDir);
-        const myImg = files.find((ele) => ele.split(".")[0] === req.query.name);
-        if (myImg) {
-            if (req.query.height || req.query.width) {
-                const initMyImg = myImg.split(".")[0];
-                const myImgExtension = myImg.split(".")[1];
-                // checking the existence of img in thumbs
-                const thumbs = yield fs_1.promises.readdir(`${images_1.imgDir}/thumbs`);
-                console.log(thumbs);
-                if (thumbs.includes(`${initMyImg + req.query.width + req.query.height + '.' + myImgExtension}`)) {
-                    console.log("includes");
-                    res.sendFile(images_1.imgDir + `/thumbs/${initMyImg + req.query.width + req.query.height + '.' + myImgExtension}`);
+const changePicSize_1 = __importDefault(require("./handlers/changePicSize"));
+const checkPicSize = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        console.log(req.query);
+        if (!req.query.name) {
+            res.send("in the url enter a name query to get your picture like this , ?name=example&height=500&width=500 , note that width and height are optional");
+        }
+        else {
+            const files = yield fs_1.promises.readdir(images_1.imgDir);
+            const myImg = files.find((ele) => ele.split(".")[0] === req.query.name) || null;
+            if (myImg) {
+                if (req.query.height || req.query.width) {
+                    const initMyImg = myImg.split(".")[0];
+                    const myImgExtension = myImg.split(".")[1];
+                    // checking the existence of img in thumbs
+                    const thumbs = yield fs_1.promises.readdir(`${images_1.imgDir}/thumbs`);
+                    console.log(thumbs);
+                    if (thumbs.includes(`${initMyImg + req.query.width + req.query.height + '.' + myImgExtension}`)) {
+                        console.log("includes");
+                        res.sendFile(images_1.imgDir + `/thumbs/${initMyImg + req.query.width + req.query.height + '.' + myImgExtension}`);
+                    }
+                    else {
+                        const changePic = yield (0, changePicSize_1.default)(myImg, Number(req.query.width), Number(req.query.height));
+                        res.sendFile(images_1.imgDir + `/thumbs/${initMyImg + req.query.width + req.query.height + '.' + myImgExtension}`);
+                    }
                 }
                 else {
-                    (0, sharp_1.default)(images_1.imgDir + `/${myImg}`)
-                        .resize(Number(req.query.width) || 200, Number(req.query.height) || 200)
-                        .toFile(images_1.imgDir + `/thumbs/${initMyImg + req.query.width + req.query.height + '.' + myImgExtension}`)
-                        .then((resolve) => {
-                        res.sendFile(images_1.imgDir + `/thumbs/${initMyImg + req.query.width + req.query.height + '.' + myImgExtension}`);
-                    });
+                    res.sendFile(images_1.imgDir + `/${myImg}`);
                 }
             }
             else {
-                res.sendFile(images_1.imgDir + `/${myImg}`);
+                res.send('no such an image in your src/images directory');
             }
         }
-        else {
-            res.send('no such an image in your src/images directory');
-        }
+    }
+    catch (err) {
+        res.status(400).send(`${err}`);
     }
 });
-exports.default = changePicSize;
+exports.default = checkPicSize;

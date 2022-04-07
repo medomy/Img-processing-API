@@ -8,6 +8,7 @@ const imgRoute_1 = __importDefault(require("./imagesRoutes/imgRoute"));
 const routes = express_1.default.Router();
 routes.get('/', (req, res) => {
     res.send("hello from first Route in images you still have one route /img2 to go");
+    console.log(Number("ayhaga"));
 });
 routes.use('/img', imgRoute_1.default);
 exports.default = routes;
